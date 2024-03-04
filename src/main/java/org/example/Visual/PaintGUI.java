@@ -19,7 +19,6 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     private JSlider sliderPincel;
     private JButton btnColorNegro;
     private JLabel lblFiguras;
-    private JButton btnRectangulo;
     private JButton btnCirculo;
     private JButton btnLinea;
     private JButton btnCuadrado;
@@ -41,11 +40,15 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     //----------------------------------------------------------------------------------------------------------------------
     private List<Circulo> circulos; //En esta lista se guardan los círculos
     private List<Linea> lineas;
+    private List<Cuadrado> cuadrados;
     private int diametro;
     private int grosorLinea;
+    private int lado;
     private Color elColor;
     private ImageIcon imagen;
     private boolean dibujarLinea;
+    private boolean dibujarCirculo;
+    private boolean dibujarCuadrado;
 
     public PaintGUI(){
         super("Paint 2");
@@ -54,10 +57,14 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         panelGeneral.add(panelCenter, BorderLayout.CENTER); //Aquí se añade el panel de dibujo al panel general.
         diametro = 10;
         grosorLinea = 3;
+        lado=10;
         elColor = Color.BLACK;
         circulos = new ArrayList<>();
         lineas = new ArrayList<>();
+        cuadrados = new ArrayList<>();
         dibujarLinea = false;
+        dibujarCirculo = true;
+        dibujarCuadrado = false;
         addEventos();
         imagen = new ImageIcon("src/main/java/org/example/recursos/IconoPalette-removebg-resized.png");
         lblTitulo.setIcon(imagen);
@@ -146,6 +153,8 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             @Override
             public void actionPerformed(ActionEvent e) {
                 dibujarLinea = true;
+                dibujarCirculo = false;
+                dibujarCuadrado = false;
                 panelCenter.repaint();
             }
         });
@@ -153,22 +162,21 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         btnCuadrado.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dibujarLinea = false;
+                dibujarCirculo = false;
+                dibujarCuadrado = true;
+                panelCenter.repaint();
             }
         });
 
-        btnRectangulo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
 
 
         btnCirculo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dibujarCirculo = true;
                 dibujarLinea = false;
+                dibujarCuadrado = false;
                 panelCenter.repaint();
             }
         });
@@ -190,7 +198,10 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                circulos.clear();
+                lineas.clear();
+                cuadrados.clear();
+                panelCenter.repaint();
             }
         });
     }
@@ -206,11 +217,21 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = e.getWheelRotation();
-                diametro += notches * -5;
-                if (diametro < 10) diametro = 10;
-                if (diametro > 100) diametro = 100;
+
+                if (dibujarCirculo) {
+                    diametro += notches * -5;
+                    if (diametro < 10) diametro = 10;
+                    if (diametro > 100) diametro = 100;
+                }
                 if (dibujarLinea) {
-                    grosorLinea = diametro / 5;
+                    grosorLinea += notches * -5;
+                    if (grosorLinea < 10) grosorLinea = 10; // Grosor mínimo de 1
+                    if (grosorLinea > 100) grosorLinea = 100;
+                }
+                if (dibujarCuadrado) {
+                    lado += notches * -5;
+                    if (lado < 10) lado = 10;
+                    if (lado > 100) lado = 100;
                 }
                 panelCenter.repaint();
 
@@ -226,7 +247,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (!dibujarLinea) {
+        if (dibujarCirculo) {
             if (SwingUtilities.isRightMouseButton(e)) { //Esto es lo que permite el "modo borrador"
                 elColor = Color.WHITE;
             } else if (SwingUtilities.isLeftMouseButton(e)) { //Con esto regresa a "modo pincel"
@@ -234,9 +255,23 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             }
         }
         if (dibujarLinea) {
-            // Si estamos en modo de dibujo de líneas, agregamos el punto inicial
-            lineas.add(new Linea(e.getPoint(), e.getPoint(), elColor,grosorLinea));
+            //Si estamos en modo de dibujo de líneas, agregamos el punto inicial
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                lineas.add(new Linea(e.getPoint(), e.getPoint(), elColor, grosorLinea));
+            }
+            if (SwingUtilities.isRightMouseButton(e)) { //Esto es lo que permite el "modo borrador"
+                elColor = Color.WHITE;
+            }
         }
+        if (dibujarCuadrado) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                cuadrados.add(new Cuadrado(new Point(e.getX(), e.getY()), lado, elColor));
+            }
+            if (SwingUtilities.isRightMouseButton(e)) {
+                elColor = Color.WHITE;
+            }
+        }
+
         panelCenter.repaint();
     }
 
@@ -244,6 +279,9 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent e) {
         if (dibujarLinea) {
             lineas.add(new Linea(e.getPoint(), e.getPoint(), elColor, grosorLinea));
+        }
+        if (dibujarCuadrado) {
+            cuadrados.add(new Cuadrado(new Point(e.getX(), e.getY()), lado, elColor));
         }
     }
 
@@ -269,7 +307,8 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             if (!lineas.isEmpty()) {
                 lineas.get(lineas.size() - 1).setPuntoFinal(e.getPoint());
             }
-        } else {
+        }
+        if (dibujarCirculo) {
             int iX = e.getX() - diametro / 2;
             int iY = e.getY() - diametro / 2;
             circulos.add(new Circulo(new Point(iX, iY), diametro, elColor));
@@ -294,15 +333,22 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
 
+            for (Cuadrado cuadrado : cuadrados) {
+                g2d.setColor(cuadrado.getColor());
+                g2d.fillRect(cuadrado.getX(), cuadrado.getY(), cuadrado.getLado(), cuadrado.getLado());
+            }
+
+            for (PaintGUI.Linea linea : lineas) {
+                g2d.setColor(linea.getColor());
+                g2d.setStroke(new BasicStroke(linea.getGrosorLinea())); // Usa el grosor almacenado en cada línea
+                g2d.drawLine(linea.getPuntoInicial().x, linea.getPuntoInicial().y, linea.getPuntoFinal().x, linea.getPuntoFinal().y);
+            }
+
             for (PaintGUI.Circulo circulo : circulos) {
                 g.setColor(circulo.getColor());
                 g.fillOval(circulo.getPosicion().x, circulo.getPosicion().y, circulo.getDiametro(), circulo.getDiametro());
             }
-            for (PaintGUI.Linea linea : lineas) {
-                g2d.setColor(linea.getColor());
-                g2d.setStroke(new BasicStroke(linea.getGrosorlinea())); // Usa el grosor almacenado en cada línea
-                g2d.drawLine(linea.getPuntoInicial().x, linea.getPuntoInicial().y, linea.getPuntoFinal().x, linea.getPuntoFinal().y);
-            }
+
         }
 
     }
@@ -335,13 +381,13 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         private Point puntoInicial;
         private Point puntoFinal;
         private Color color;
-        private int grosorlinea;
+        private int grosorLinea;
 
-        public Linea(Point puntoInicial, Point puntoFinal, Color color, int grosorlinea) {
+        public Linea(Point puntoInicial, Point puntoFinal, Color color, int grosorLinea) {
             this.puntoInicial = puntoInicial;
             this.puntoFinal = puntoFinal;
             this.color = color;
-            this.grosorlinea =grosorLinea;
+            this.grosorLinea = PaintGUI.this.grosorLinea;
         }
         public void setPuntoFinal(Point puntoFinal) {
             this.puntoFinal = puntoFinal;
@@ -359,8 +405,40 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             return color;
         }
 
-        public int getGrosorlinea() {
-            return grosorlinea;
+        public int getGrosorLinea() {
+            return grosorLinea;
+        }
+    }
+
+    public class Cuadrado {
+        private Point posicion; // Posición superior izquierda del cuadrado
+        private int lado; // Longitud del lado del cuadrado
+        private Color color;
+
+        public Cuadrado(Point posicion, int lado, Color color) {
+            this.posicion = posicion;
+            this.lado = lado;
+            this.color = color;
+        }
+
+        public Point getPosicion() {
+            return posicion;
+        }
+
+        public int getX() {
+            return posicion.x;
+        }
+
+        public int getY() {
+            return posicion.y;
+        }
+
+        public int getLado() {
+            return lado;
+        }
+
+        public Color getColor() {
+            return color;
         }
     }
 }
