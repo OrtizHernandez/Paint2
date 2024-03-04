@@ -1,5 +1,6 @@
 package org.example.Visual;
 
+import java.io.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -49,7 +50,9 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     private boolean dibujarLinea;
     private boolean dibujarCirculo;
     private boolean dibujarCuadrado;
+    private static final String RUTA_ARCHIVO = "src/main/java/org/example/recursos/dibujo.dat";
 
+//----------------------------------------------------------------------------------------------------------------------
     public PaintGUI(){
         super("Paint 2");
         panelCenter = new panelCenter();
@@ -184,14 +187,14 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         btonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                guardarDibujo();
             }
         });
 
         btonCargar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                cargarDibujo();
             }
         });
 
@@ -205,7 +208,30 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             }
         });
     }
+    //----------------------------------------------------------------------------------------------------------------------
 
+    public void guardarDibujo() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RUTA_ARCHIVO))) {
+            oos.writeObject(circulos);
+            oos.writeObject(lineas);
+            oos.writeObject(cuadrados);
+            JOptionPane.showMessageDialog(this, "Dibujo guardado correctamente.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el dibujo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void cargarDibujo() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(RUTA_ARCHIVO))) {
+            circulos = (List<Circulo>) ois.readObject();
+            lineas = (List<Linea>) ois.readObject();
+            cuadrados = (List<Cuadrado>) ois.readObject();
+            JOptionPane.showMessageDialog(this, "Dibujo cargado correctamente.");
+            panelCenter.repaint();
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar el dibujo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -354,7 +380,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    class Circulo { //Todo esto es el objeto circulo que nos permite fijar los circulos con diferentes tamaños y colores, que a su vez tambien DEBERIA facilitar el guardar los dibujos
+    class Circulo implements Serializable{ //Todo esto es el objeto circulo que nos permite fijar los circulos con diferentes tamaños y colores, que a su vez tambien DEBERIA facilitar el guardar los dibujos
         private Point posicion;
         private int diametro;
         private Color color;
@@ -377,7 +403,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             return color;
         }
     }
-    class Linea {
+    class Linea implements Serializable{
         private Point puntoInicial;
         private Point puntoFinal;
         private Color color;
@@ -410,7 +436,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         }
     }
 
-    public class Cuadrado {
+    public class Cuadrado implements Serializable{
         private Point posicion; // Posición superior izquierda del cuadrado
         private int lado; // Longitud del lado del cuadrado
         private Color color;
