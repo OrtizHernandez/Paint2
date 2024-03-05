@@ -39,7 +39,8 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     private JButton btnColorVerdeO;
     private JButton btnColorCrema;
     private JButton btnColorRojoO;
-//---------------------------------------------------------------------------------------------------------------------- Atributos agregados manualmente
+    private JButton btnTriangulo;
+    //---------------------------------------------------------------------------------------------------------------------- Atributos agregados manualmente
     private List<Circulo> circulos; //En esta lista se guardan los círculos
     private List<Linea> lineas; //aqui las lineas
     private List<Cuadrado> cuadrados; //y aqui los cuadrados
@@ -185,6 +186,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 dibujarLinea = true;
                 dibujarCirculo = false;
                 dibujarCuadrado = false;
+                dibujarTriangulo = false;
                 panelCenter.repaint();
             }
         });
@@ -195,6 +197,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 dibujarLinea = false;
                 dibujarCirculo = false;
                 dibujarCuadrado = true;
+                dibujarTriangulo = false;
                 panelCenter.repaint();
             }
         });
@@ -205,7 +208,17 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 dibujarCirculo = true;
                 dibujarLinea = false;
                 dibujarCuadrado = false;
+                dibujarTriangulo = false;
                 panelCenter.repaint();
+            }
+        });
+        btnTriangulo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dibujarLinea = false;
+                dibujarCirculo = false;
+                dibujarCuadrado = true;
+                dibujarTriangulo = false;
             }
         });
 
@@ -218,6 +231,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 panelCenter.repaint();
             }
         });
+
 
     }
 
