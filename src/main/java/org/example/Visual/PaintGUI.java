@@ -8,13 +8,12 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaintGUI extends JFrame implements MouseListener, MouseMotionListener{
+public class PaintGUI extends JFrame implements MouseListener, MouseMotionListener{ //Atributos agregados por el UI
     private JPanel panelGeneral;
     private JPanel panelNorte;
     private JPanel panelSur;
     private JPanel panelCenter;
     private JButton btnLimpiar;
-    private JButton btonGuardar;
     private JLabel lblCoordenadas;
     private JSlider sliderPincel;
     private JButton btnColorNegro;
@@ -36,11 +35,14 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     private JButton btnColorNaranja;
     private JButton btnColorRosado;
     private JButton btnColorCafe;
-    private JButton btonCargar;
-    //----------------------------------------------------------------------------------------------------------------------
+    private JButton btnColorGris;
+    private JButton btnColorVerdeO;
+    private JButton btnColorCrema;
+    private JButton btnColorRojoO;
+//---------------------------------------------------------------------------------------------------------------------- Atributos agregados manualmente
     private List<Circulo> circulos; //En esta lista se guardan los círculos
-    private List<Linea> lineas;
-    private List<Cuadrado> cuadrados;
+    private List<Linea> lineas; //aqui las lineas
+    private List<Cuadrado> cuadrados; //y aqui los cuadrados
     private int diametro;
     private int grosorLinea;
     private int lado;
@@ -52,7 +54,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
 
     public PaintGUI(){
         super("Paint 2");
-        panelCenter = new panelCenter();
+        panelCenter = new panelCenter(); //Esto sirve para conectar con el UI
         setContentPane(panelGeneral);
         panelGeneral.add(panelCenter, BorderLayout.CENTER); //Aquí se añade el panel de dibujo al panel general.
         diametro = 10;
@@ -68,7 +70,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         addEventos();
         imagen = new ImageIcon("src/main/java/org/example/recursos/IconoPalette-removebg-resized.png");
         lblTitulo.setIcon(imagen);
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------Eventos de botones
         btnColorNegro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,6 +141,34 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 panelCenter.repaint();
             }
         });
+        btnColorGris.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elColor = new Color(161,168,163);
+                panelCenter.repaint();
+            }
+        });
+        btnColorVerdeO.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elColor = new Color(14,160,7);
+                panelCenter.repaint();
+            }
+        });
+        btnColorCrema.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elColor = new Color(255,235,193);
+                panelCenter.repaint();
+            }
+        });
+        btnColorRojoO.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elColor = new Color(171,0,11);
+                panelCenter.repaint();
+            }
+        });
 
         sliderPincel.addChangeListener(new ChangeListener() {
             @Override
@@ -169,8 +199,6 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             }
         });
 
-
-
         btnCirculo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -178,20 +206,6 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 dibujarLinea = false;
                 dibujarCuadrado = false;
                 panelCenter.repaint();
-            }
-        });
-
-        btonGuardar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        btonCargar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
             }
         });
 
@@ -204,10 +218,11 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 panelCenter.repaint();
             }
         });
+
     }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------Eventos Mouse
 
 
     public void addEventos(){
@@ -303,7 +318,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     @Override
     public void mouseDragged(MouseEvent e) {
         if (dibujarLinea) {
-            // Si estamos en modo de dibujo de líneas, actualizamos el punto final de la última línea
+            //Si estamos en modo de dibujo de líneas, actualizamos el punto final de la última línea
             if (!lineas.isEmpty()) {
                 lineas.get(lineas.size() - 1).setPuntoFinal(e.getPoint());
             }
@@ -322,7 +337,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         lblCoordenadas.setText("X: " + e.getX() + " Y: " + e.getY() + ")");
     }
 
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------Adicion de paintComponet al panel genral
     class panelCenter extends JPanel {
         public panelCenter() {
             setBackground(Color.WHITE);
@@ -340,7 +355,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
 
             for (PaintGUI.Linea linea : lineas) {
                 g2d.setColor(linea.getColor());
-                g2d.setStroke(new BasicStroke(linea.getGrosorLinea())); // Usa el grosor almacenado en cada línea
+                g2d.setStroke(new BasicStroke(linea.getGrosorLinea())); //Usa el grosor almacenado en cada línea
                 g2d.drawLine(linea.getPuntoInicial().x, linea.getPuntoInicial().y, linea.getPuntoFinal().x, linea.getPuntoFinal().y);
             }
 
@@ -387,7 +402,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             this.puntoInicial = puntoInicial;
             this.puntoFinal = puntoFinal;
             this.color = color;
-            this.grosorLinea = PaintGUI.this.grosorLinea;
+            this.grosorLinea = grosorLinea;
         }
         public void setPuntoFinal(Point puntoFinal) {
             this.puntoFinal = puntoFinal;
@@ -411,8 +426,8 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     }
 
     public class Cuadrado {
-        private Point posicion; // Posición superior izquierda del cuadrado
-        private int lado; // Longitud del lado del cuadrado
+        private Point posicion; //Posición superior izquierda del cuadrado
+        private int lado; //Longitud del lado del cuadrado
         private Color color;
 
         public Cuadrado(Point posicion, int lado, Color color) {

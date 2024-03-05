@@ -2,14 +2,14 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.example.Visual.PaintGUI">
   <grid id="27dc6" binding="panelGeneral" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1065" height="546"/>
+      <xy x="20" y="20" width="1215" height="546"/>
     </constraints>
     <properties>
       <preferredSize width="900" height="500"/>
     </properties>
     <border type="none"/>
     <children>
-      <grid id="431b1" binding="panelNorte" layout-manager="GridLayoutManager" row-count="3" column-count="13" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="431b1" binding="panelNorte" layout-manager="GridLayoutManager" row-count="3" column-count="15" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints border-constraint="North"/>
         <properties>
@@ -210,12 +210,12 @@
           </component>
           <hspacer id="1080c">
             <constraints>
-              <grid row="1" column="12" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="14" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
           <hspacer id="4b4c5">
             <constraints>
-              <grid row="2" column="12" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="14" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
           <hspacer id="cf191">
@@ -296,9 +296,77 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
+          <component id="7bd75" class="javax.swing.JButton" binding="btnColorGris">
+            <constraints>
+              <grid row="1" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="30"/>
+                <maximum-size width="50" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-6182749"/>
+              <borderPainted value="true"/>
+              <contentAreaFilled value="true"/>
+              <defaultCapable value="true"/>
+              <foreground color="-3760385"/>
+              <label value=""/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="23877" class="javax.swing.JButton" binding="btnColorVerdeO">
+            <constraints>
+              <grid row="2" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="30"/>
+                <maximum-size width="50" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-15818745"/>
+              <borderPainted value="true"/>
+              <contentAreaFilled value="true"/>
+              <defaultCapable value="true"/>
+              <foreground color="-3760385"/>
+              <label value=""/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="8cf20" class="javax.swing.JButton" binding="btnColorCrema">
+            <constraints>
+              <grid row="1" column="13" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="30"/>
+                <maximum-size width="50" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-5183"/>
+              <borderPainted value="true"/>
+              <contentAreaFilled value="true"/>
+              <defaultCapable value="true"/>
+              <foreground color="-3760385"/>
+              <label value=""/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="308be" class="javax.swing.JButton" binding="btnColorRojoO">
+            <constraints>
+              <grid row="2" column="13" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="30"/>
+                <maximum-size width="50" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-5570549"/>
+              <borderPainted value="true"/>
+              <contentAreaFilled value="true"/>
+              <defaultCapable value="true"/>
+              <foreground color="-3760385"/>
+              <label value=""/>
+              <text value=""/>
+            </properties>
+          </component>
         </children>
       </grid>
-      <grid id="28064" binding="panelSur" layout-manager="GridLayoutManager" row-count="1" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="28064" binding="panelSur" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints border-constraint="South"/>
         <properties>
@@ -309,20 +377,11 @@
         <children>
           <component id="d0184" class="javax.swing.JButton" binding="btnLimpiar">
             <constraints>
-              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <label value="Limpiar"/>
               <text value="Limpiar"/>
-            </properties>
-          </component>
-          <component id="f25c0" class="javax.swing.JButton" binding="btonGuardar">
-            <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <label value="Guardar"/>
-              <text value="Guardar"/>
             </properties>
           </component>
           <component id="baabd" class="javax.swing.JLabel" binding="lblCoordenadas">
@@ -346,18 +405,9 @@
           </hspacer>
           <hspacer id="dc6c5">
             <constraints>
-              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
           </hspacer>
-          <component id="1a862" class="javax.swing.JButton" binding="btonCargar">
-            <constraints>
-              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <label value="Cargar"/>
-              <text value="Cargar"/>
-            </properties>
-          </component>
         </children>
       </grid>
       <grid id="d6e51" binding="panelCenter" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
