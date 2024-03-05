@@ -264,6 +264,11 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                     if (lado < 10) lado = 10;
                     if (lado > 100) lado = 100;
                 }
+                if (dibujarTriangulo) {
+                    lado += notches * -5;
+                    if (lado < 10) lado = 10;
+                    if (lado > 150) lado = 150;
+                }
                 panelCenter.repaint();
 
 
@@ -297,6 +302,14 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         if (dibujarCuadrado) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 cuadrados.add(new Cuadrado(new Point(e.getX(), e.getY()), lado, elColor));
+            }
+            if (SwingUtilities.isRightMouseButton(e)) {
+                elColor = Color.WHITE;
+            }
+        }
+        if (dibujarTriangulo) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                triangulos.add(new Triangulo(e.getPoint(), lado, elColor));
             }
             if (SwingUtilities.isRightMouseButton(e)) {
                 elColor = Color.WHITE;
