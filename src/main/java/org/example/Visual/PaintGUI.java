@@ -219,8 +219,8 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
             public void actionPerformed(ActionEvent e) {
                 dibujarLinea = false;
                 dibujarCirculo = false;
-                dibujarCuadrado = true;
-                dibujarTriangulo = false;
+                dibujarCuadrado = false;
+                dibujarTriangulo = true;
                 panelCenter.repaint();
             }
         });
@@ -230,7 +230,9 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 circulos.clear();
                 lineas.clear();
                 cuadrados.clear();
+                triangulos.clear();
                 panelCenter.repaint();
+
             }
         });
 
@@ -363,7 +365,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        lblCoordenadas.setText("X: " + e.getX() + " Y: " + e.getY() + ")");
+        lblCoordenadas.setText("(X: " + e.getX() + " Y: " + e.getY() + ")");
     }
 
     //----------------------------------------------------------------------------------------------------------------------Adicion de paintComponet al panel genral
@@ -376,6 +378,13 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
+
+            for (Triangulo triangulo : triangulos) {
+                g2d.setColor(triangulo.getColor());
+                int[] xPoints = {triangulo.getPunto().x, triangulo.getPunto().x - triangulo.getLado()/2, triangulo.getPunto().x + triangulo.getLado()/2};
+                int[] yPoints = {triangulo.getPunto().y, triangulo.getPunto().y + (int)(triangulo.getLado() * Math.sqrt(3)/2), triangulo.getPunto().y + (int)(triangulo.getLado() * Math.sqrt(3)/2)};
+                g2d.fillPolygon(xPoints, yPoints, 3);
+            }
 
             for (Cuadrado cuadrado : cuadrados) {
                 g2d.setColor(cuadrado.getColor());
@@ -475,6 +484,29 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
 
         public int getY() {
             return posicion.y;
+        }
+
+        public int getLado() {
+            return lado;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+    }
+    class Triangulo {
+        private Point punto; //Punto superior del triángulo
+        private int lado; //Longitud del lado del triángulo equilátero
+        private Color color;
+
+        public Triangulo(Point punto, int lado, Color color) {
+            this.punto = punto;
+            this.lado = lado;
+            this.color = color;
+        }
+
+        public Point getPunto() {
+            return punto;
         }
 
         public int getLado() {
