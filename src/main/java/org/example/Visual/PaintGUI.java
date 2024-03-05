@@ -44,6 +44,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     private List<Circulo> circulos; //En esta lista se guardan los círculos
     private List<Linea> lineas; //aqui las lineas
     private List<Cuadrado> cuadrados; //y aqui los cuadrados
+    private List<Triangulo> triangulos;
     private int diametro;
     private int grosorLinea;
     private int lado;
@@ -52,7 +53,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
     private boolean dibujarLinea;
     private boolean dibujarCirculo;
     private boolean dibujarCuadrado;
-
+    private boolean dibujarTriangulo;
     public PaintGUI(){
         super("Paint 2");
         panelCenter = new panelCenter(); //Esto sirve para conectar con el UI
@@ -65,6 +66,7 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
         circulos = new ArrayList<>();
         lineas = new ArrayList<>();
         cuadrados = new ArrayList<>();
+        triangulos = new ArrayList<>();
         dibujarLinea = false;
         dibujarCirculo = true;
         dibujarCuadrado = false;
@@ -219,9 +221,9 @@ public class PaintGUI extends JFrame implements MouseListener, MouseMotionListen
                 dibujarCirculo = false;
                 dibujarCuadrado = true;
                 dibujarTriangulo = false;
+                panelCenter.repaint();
             }
         });
-
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
